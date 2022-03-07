@@ -1,0 +1,34 @@
+# settings-dev.yaml
+name: "DRCache-go"
+port: 8080
+logsAddress: "./logs/"
+
+mysql:
+  uame: "root"
+  host: "192.168.220.141"
+  port: 3306
+  password: "root"
+  dbName: "xhh"
+
+pg:
+  uame: "postgres"
+  host: "192.168.220.149"
+  port: 5432
+  password: "postgres"
+  dbName: "drcache"
+
+redis:
+  host: "192.168.220.141"
+  port: "6379"
+  password: "abc123$%^"
+  db: 0
+
+passwordLevel: 2
+
+jwt:
+  key: "xx4G2QXmFQL9c7TTH7jYBsfQhcDeT6Zw"
+
+minio:
+  endpoint: "192.168.220.141:9000"
+  accessKeyID: "minioadmin"
+  secretAccessKey: "minioadmin"

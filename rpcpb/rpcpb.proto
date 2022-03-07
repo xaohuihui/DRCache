@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option  go_package = "./;rpcpb";
+package rpcpb;
+
+message GetParam {
+  string key = 1;
+}
+
+message GetRes {
+  bytes value = 1;
+}
+
+message SetParam {
+  string key = 1;
+  bytes value = 2;
+}
+
+message SetRes {
+  bool ok = 1;
+  bytes mes = 2;
+}
+
+service GroupCache {
+  rpc GetRemoteValue(GetParam) returns (GetRes);
+  rpc SetRemoteValue(SetParam) returns (SetRes);
+}

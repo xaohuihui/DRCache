@@ -1,0 +1,27 @@
+2022-03-07T18:42:51.114+0800	ERROR	initialize/redis.go:20	[InitRedis] 连接redis异常
+DRCache/initialize.InitRedis
+	C:/Users/songyanhui/go/src/DRCache/initialize/redis.go:20
+main.startRPCServer
+	C:/Users/songyanhui/go/src/DRCache/main.go:46
+main.main
+	C:/Users/songyanhui/go/src/DRCache/main.go:61
+runtime.main
+	D:/go/src/runtime/proc.go:225
+2022-03-07T18:42:51.114+0800	ERROR	initialize/redis.go:21	192.168.220.141
+DRCache/initialize.InitRedis
+	C:/Users/songyanhui/go/src/DRCache/initialize/redis.go:21
+main.startRPCServer
+	C:/Users/songyanhui/go/src/DRCache/main.go:46
+main.main
+	C:/Users/songyanhui/go/src/DRCache/main.go:61
+runtime.main
+	D:/go/src/runtime/proc.go:225
+2022-03-07T18:42:51.116+0800	ERROR	initialize/redis.go:22	dial tcp 192.168.220.141:6379: i/o timeout
+DRCache/initialize.InitRedis
+	C:/Users/songyanhui/go/src/DRCache/initialize/redis.go:22
+main.startRPCServer
+	C:/Users/songyanhui/go/src/DRCache/main.go:46
+main.main
+	C:/Users/songyanhui/go/src/DRCache/main.go:61
+runtime.main
+	D:/go/src/runtime/proc.go:225
