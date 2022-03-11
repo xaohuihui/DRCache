@@ -12,7 +12,7 @@ import (
 // software: GoLand
 
 
-func CreateRPCClient(target string) {
+func CreateRPCClient(target, key string) {
 	// 连接服务器
 	conn, err := grpc.Dial(target)
 	if err != nil {
@@ -22,7 +22,7 @@ func CreateRPCClient(target string) {
 
 	c := pb.NewGroupCacheClient(conn)
 	// 调用服务端的获取远程节点中的缓存值
-	r, err := c.GetRemoteValue(context.Background(), &pb.GetParam{Key: "q1mi"})
+	r, err := c.GetRemoteValue(context.Background(), &pb.GetParam{Key: key})
 	if err != nil {
 		fmt.Printf("could not greet: %v", err)
 	}

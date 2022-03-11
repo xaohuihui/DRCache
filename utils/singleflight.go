@@ -2,7 +2,7 @@ package utils
 
 import "sync"
 
-// author: songyanhui
+// author: xaohuihui
 // datetime: 2022/2/15 15:51:17
 // software: GoLand
 
