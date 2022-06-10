@@ -73,12 +73,12 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				}
 
 				if stack {
-					zap.L().Error("[Recovery from panic]",
+					global.Lg.Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)
 				} else {
-					zap.L().Error("[Recovery from panic]",
+					global.Lg.Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)

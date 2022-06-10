@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"net"
+	"time"
 )
 
 // author: xaohuihui
@@ -19,11 +20,14 @@ var r = RedisController{}
 type GroupCacheServer struct{}
 
 func (p *GroupCacheServer) SetRemoteValue(ctx context.Context, in *pb.SetParam) (*pb.SetRes, error) {
-	panic("implement me")
+	err := r.SetVal(in.Key, in.Value, time.Second * 1000)
+	if err != nil {
+		return nil , err
+	}
+	return &pb.SetRes{Ok: true, Mes: []byte("set success")}, nil
 }
 
 func (p *GroupCacheServer) GetRemoteValue(ctx context.Context, in *pb.GetParam) (*pb.GetRes, error) {
-
 	res, err := r.GetVal(in.Key)
 	if err != nil {
 		return nil, err

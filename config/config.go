@@ -1,14 +1,15 @@
 package config
 
 type ServerConfig struct {
-	Name          string      `mapstructure:"name"`
-	Port          int         `mapstructure:"port"`
-	MysqlInfo     MysqlConfig `mapstructure:"mysql"`
-	PGInfo        PGConfig    `mapstructure:"pg"`
-	RedisInfo     RedisConfig `mapstructure:"redis"`
-	LogsAddress   string      `mapstructure:"logsAddress"`
-	PasswordLevel int         `mapstructure:"passwordLevel"`
-	JWTKey        JWTConfig   `mapstructure:"jwt"`
+	Name               string               `mapstructure:"name"`
+	Port               int                  `mapstructure:"port"`
+	MysqlInfo          MysqlConfig          `mapstructure:"mysql"`
+	PGInfo             PGConfig             `mapstructure:"pg"`
+	RedisInfo          RedisConfig          `mapstructure:"redis"`
+	LogsAddress        string               `mapstructure:"logsAddress"`
+	PasswordLevel      int                  `mapstructure:"passwordLevel"`
+	JWTKey             JWTConfig            `mapstructure:"jwt"`
+	ConsistentHashInfo ConsistentHashConfig `mapstructure:"consistentHash"`
 }
 
 type MysqlConfig struct {
@@ -38,3 +39,7 @@ type JWTConfig struct {
 	SigningKey string `mapstructure:"key" json:"key"`
 }
 
+type ConsistentHashConfig struct {
+	LN        string `mapstructure:"localNode"`
+	VNCount int    `mapstructure:"virtualNodeCount"`
+}

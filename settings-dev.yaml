@@ -18,9 +18,9 @@ pg:
   dbName: "drcache"
 
 redis:
-  host: "192.168.220.141"
+  host: "127.0.0.1"
   port: "6379"
-  password: "abc123$%^"
+  password: ""
   db: 0
 
 passwordLevel: 2
@@ -32,3 +32,7 @@ minio:
   endpoint: "192.168.220.141:9000"
   accessKeyID: "minioadmin"
   secretAccessKey: "minioadmin"
+
+consistentHash:
+  localNode: ":48080"
+  virtualNodeCount: 4
