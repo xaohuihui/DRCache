@@ -26,10 +26,13 @@ func GetQueryCache(c *gin.Context) {
 	}
 	res, err := r.GetVal(QueryCacheKey.Key)
 	// 本地节点获取不到 通过一致性hash 查询key属于哪个分布式节点，然后进行获取
-	remoteNode := global.ConsistentHash.GetNode(QueryCacheKey.Key)
-	fmt.Println(remoteNode)
-	value, err := CreateRPCClient(remoteNode, QueryCacheKey.Key)
-	fmt.Println(value)
+	flag := 0
+	if err != nil {
+		remoteNode := global.ConsistentHash.GetNode(QueryCacheKey.Key)
+		res, err = CreateGetRPCClient(remoteNode, QueryCacheKey.Key)
+		global.Lg.Info(fmt.Sprintf("获取远程节点%s缓存key%s\n", remoteNode, QueryCacheKey.Key))
+		flag = 1
+	}
 	if err != nil {
 		customResponse.Err(c, http.StatusBadRequest, 400, "未获取到数据", gin.H{
 			"key":   QueryCacheKey.Key,
@@ -37,9 +40,16 @@ func GetQueryCache(c *gin.Context) {
 		})
 		return
 	}
+	// 若为远程节点获取的值，则缓存该值，过期时间设置为较短
+	if flag == 1 {
+		err := r.SetVal(QueryCacheKey.Key, string(res), time.Duration(100)*time.Second)
+		if err != nil {
+			global.Lg.Info(fmt.Sprintf("缓存数据失败key: %s, value : %s\n", QueryCacheKey.Key, string(res)))
+		}
+	}
 	customResponse.Success(c, http.StatusOK, "获取数据成功", gin.H{
 		"key":   QueryCacheKey.Key,
-		"value": res,
+		"value": string(res),
 	})
 }
 
@@ -50,7 +60,10 @@ func SetQueryCache(c *gin.Context) {
 		HandleValidatorError(c, err)
 		return
 	}
-	err := r.SetVal(SetCacheParses.Key, SetCacheParses.Value, time.Duration(SetCacheParses.Timeout)*time.Second)
+	// string 类型转byte数组
+	remoteNode := global.ConsistentHash.GetNode(SetCacheParses.Key)
+	err := CreateSetRPCClient(remoteNode, SetCacheParses.Key, []byte(SetCacheParses.Value), SetCacheParses.Timeout)
+	global.Lg.Info(fmt.Sprintf("设置远程节点[%s]缓存key[%s]\n", remoteNode, SetCacheParses.Key))
 	if err != nil {
 		customResponse.Err(c, http.StatusBadRequest, 400, "加入缓存失败", gin.H{
 			"key":     SetCacheParses.Key,

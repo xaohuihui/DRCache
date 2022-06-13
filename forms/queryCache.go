@@ -11,5 +11,5 @@ type QueryCacheForm struct {
 type SetCacheParse struct {
 	Key   string `form:"key" json:"key" binding:"required"`
 	Value string `form:"value" json:"value" binding:"required"`
-	Timeout int `form:"timeout" json:"timeout" binding:"required,default=1000"`
+	Timeout uint64 `form:"timeout" json:"timeout"`
 }

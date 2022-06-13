@@ -20,7 +20,7 @@ var r = RedisController{}
 type GroupCacheServer struct{}
 
 func (p *GroupCacheServer) SetRemoteValue(ctx context.Context, in *pb.SetParam) (*pb.SetRes, error) {
-	err := r.SetVal(in.Key, in.Value, time.Second * 1000)
+	err := r.SetVal(in.Key, in.Value, time.Duration(in.Timeout) * time.Second)
 	if err != nil {
 		return nil , err
 	}
