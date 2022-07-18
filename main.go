@@ -33,6 +33,9 @@ func startAPIServer() {
 	// 初始化一致性hash全局变量
 	initialize.InitConsistentHash(global.Settings.ConsistentHashInfo.LN, global.Settings.ConsistentHashInfo.VNCount)
 
+	// 初始化SingleFlight
+	initialize.InitSingleFlight()
+
 	if err := r.Run(fmt.Sprintf(":%d", global.Settings.Port)); err != nil {
 		fmt.Printf("startup service failed, err: %v\n", err)
 	}

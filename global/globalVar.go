@@ -20,4 +20,5 @@ var (
 	DB             *gorm.DB
 	Redis          *redis.Client
 	ConsistentHash *utils.Consistent
+	SingleGroup    *utils.Group
 )

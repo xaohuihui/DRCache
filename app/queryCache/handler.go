@@ -19,6 +19,7 @@ var r = RedisController{}
 
 func GetQueryCache(c *gin.Context) {
 	// 获取参数
+	var err error
 	QueryCacheKey := forms.QueryCacheForm{}
 	if err := c.ShouldBind(&QueryCacheKey); err != nil {
 		HandleValidatorError(c, err)
@@ -29,9 +30,23 @@ func GetQueryCache(c *gin.Context) {
 	flag := 0
 	if err != nil {
 		remoteNode := global.ConsistentHash.GetNode(QueryCacheKey.Key)
-		res, err = CreateGetRPCClient(remoteNode, QueryCacheKey.Key)
-		global.Lg.Info(fmt.Sprintf("获取远程节点%s缓存key%s\n", remoteNode, QueryCacheKey.Key))
+		data, err := global.SingleGroup.Do(QueryCacheKey.Key, func() (interface{}, error) {
+			data, err := CreateGetRPCClient(remoteNode, QueryCacheKey.Key)
+			if err != nil {
+				return nil, err
+			}
+			global.Lg.Info(fmt.Sprintf("获取远程节点%s缓存key%s\n", remoteNode, QueryCacheKey.Key))
+			return data, nil
+		})
+		if err != nil {
+			customResponse.Err(c, http.StatusBadRequest, 400, "未获取到数据", gin.H{
+				"key":   QueryCacheKey.Key,
+				"value": nil,
+			})
+			return
+		}
 		flag = 1
+		res = data.([]byte)
 	}
 	if err != nil {
 		customResponse.Err(c, http.StatusBadRequest, 400, "未获取到数据", gin.H{
@@ -40,6 +55,7 @@ func GetQueryCache(c *gin.Context) {
 		})
 		return
 	}
+
 	// 若为远程节点获取的值，则缓存该值，过期时间设置为较短
 	if flag == 1 {
 		err := r.SetVal(QueryCacheKey.Key, string(res), time.Duration(100)*time.Second)
